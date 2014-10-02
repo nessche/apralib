@@ -1,5 +1,10 @@
 # Apralib
 
+
+[!(https://travis-ci.org/nessche/apralib.svg?branch=master)
+[![Gem Version](https://badge.fury.io/rb/apralib.svg)](http://badge.fury.io/rb/apralib)
+
+
 A Ruby library to submit documents to the Apra Service run by [Maatalousyrittäjien eläkelaitos](http://www.mela.fi)
 
 ## Installation
