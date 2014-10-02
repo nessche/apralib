@@ -25,7 +25,7 @@ module ApraService
         raise RuntimeError, "Variable #{key.to_s} cannot be nil" if self.instance_variable_get("@#{key.to_s}").nil?
       end
       result = {}
-      result[:kayttotarkoitus] =purpose
+      result[:kayttotarkoitus] = purpose
       result[:kayttotarkoitustarkenne] = purpose_description if purpose_description
       result[:kuluosuusrahamaara] = expense_amount
       result[:kuluosuusteksti] = expense_description if expense_description
@@ -50,6 +50,26 @@ module ApraService
       result[:viite] = reference
       result
 
+    end
+
+    def self.from_hash(hash)
+      notification = Notification.new
+      notification.purpose = hash[:kayttotarkoitus]
+      notification.purpose_description = hash[:kayttotarkoitustarkenne]
+      notification.expense_amount = hash[:kuluosuusrahamaara]
+      notification.expense_description = hash[:kuluosuusteksti]
+      notification.grant_date = hash[:myontopaatoksen_antopvm]
+      notification.granted_to_group = hash[:onko_myonnetty_tyoryhmalle]
+      notification.amount = hash[:rahamaara]
+      notification.grantee = Grantee.from_hash(hash[:saajatiedot])
+      notification.work_duration_months = hash[:tyon_kesto_kuukausia]
+      notification.work_duration_days = hash[:tyon_kesto_paivia]
+      notification.work_duration_years = hash[:tyon_kesto_vuosia]
+      notification.ignore_work_duration = hash[:tyonkestoeikantaa]
+      notification.work_start_date = hash[:tyoskentelyn_alkamispvm]
+      notification.work_end_date = hash[:tyoskentelyn_paattymispvm]
+      notification.reference = hash[:viite]
+      notification
     end
 
 

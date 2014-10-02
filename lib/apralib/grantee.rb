@@ -17,9 +17,20 @@ module ApraService
       result[:henkilotunnus] = ssn if ssn
       result[:sukunimi] = last_name
 
-
       result
 
+    end
+
+    def self.from_hash(hash)
+      grantee = Grantee.new
+      grantee.address = hash[:apurahansaajanosoite]
+      grantee.zip = hash[:apurahansaajanpostinumero]
+      grantee.first_names = [hash[:etunimi1]]
+      grantee.first_name << hash[:etunimi2] if hash[:etunimi2]
+      grantee.first_name << hash[:etunimi3] if hash[:etunimi3]
+      grantee.ssn = hash[:henkilotunnus]
+      grantee.last_name = hash[:sukunimi]
+      grantee
     end
 
     def ssn=(ssn)
@@ -43,6 +54,8 @@ module ApraService
         false
       end
     end
+
+
 
 
   end

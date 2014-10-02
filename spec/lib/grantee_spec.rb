@@ -8,7 +8,7 @@ module ApraService
     describe 'verify_ssn' do
 
       it 'should return true when the ssn is valid' do
-        Grantee.verify_ssn('111111-111C').should be_true
+        expect(Grantee.verify_ssn('111111-111C')).to be_truthy
       end
 
 

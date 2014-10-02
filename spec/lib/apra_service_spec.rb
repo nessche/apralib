@@ -21,7 +21,7 @@ module ApraService
       it 'should create a valid object' do
 
         service = Client.new('user','password')
-        service.should_not be_nil
+        expect(service).not_to be_nil
 
       end
 
@@ -39,14 +39,36 @@ module ApraService
         notification.amount = 10000
         notification.purpose = 'Patsaan rakentaminen'
         notification.grant_date = Date.today << 1
-        notification.reference = 'Tama on testi-ilmoitus'
+        notification.reference = SecureRandom.hex(16)
         notification.work_duration_months = 1
         notification.work_duration_days = 2
         notification.work_duration_years = 3
+        notification.ignore_work_duration = true
         notification.work_start_date = Date.today
         notification.work_end_date = Date.today >> 1
-        service.send_notifications(notification)
-
+        notification1 = Notification.new
+        notification1.grantee = grantee
+        notification1.granted_to_group = false
+        notification1.expense_amount = 0
+        notification1.amount = 10000
+        notification1.purpose = 'Patsaan rakentaminen'
+        notification1.grant_date = Date.today << 1
+        notification1.reference = SecureRandom.hex(10)
+        notification1.work_duration_months = 1
+        notification1.work_duration_days = 2
+        notification1.work_duration_years = 3
+        notification1.ignore_work_duration = true
+        notification1.work_start_date = Date.today
+        notification1.work_end_date = Date.today >> 1
+        response = service.send_notifications([notification, notification1])
+        expect(response).not_to be_nil
+        failed_notifications = response.failed_notifications
+        expect(failed_notifications).not_to be_nil
+        expect(failed_notifications).to be_a Array
+        expect(failed_notifications.count).to eq(1)
+        notification_response = failed_notifications[0]
+        expect(notification_response.error).not_to be_nil
+        expect(notification_response.notification.reference).to eq(notification.reference)
       end
 
 
