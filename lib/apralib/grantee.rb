@@ -23,14 +23,15 @@ module ApraService
     end
 
     def ssn=(ssn)
-
+      Grantee.verify_ssn!(ssn)
+      self.instance_variable_set('@ssn', ssn)
     end
 
     def self.verify_ssn!(ssn)
       raise RuntimeError, 'The Social Security Number is not in the correct format' unless ssn =~ SSN_REGEX
       big_number = "#{$1}#{$3}".to_i
       check = CHECK_DIGITS[big_number % 31]
-      raise RuntimeError, 'The check digit does not match, expected #{check}, got #{$4}' unless check == $4
+      raise RuntimeError, "The check digit does not match, expected #{check}, got #{$4}" unless check == $4
     end
 
     def self.verify_ssn(ssn)

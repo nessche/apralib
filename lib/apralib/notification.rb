@@ -22,7 +22,7 @@ module ApraService
 
     def to_hash
       NON_NILLABLE_KEYS.each do |key|
-        raise RuntimeError, "Variable #{key.to_s} cannot be nil" unless self.instance_variable_get(key)
+        raise RuntimeError, "Variable #{key.to_s} cannot be nil" if self.instance_variable_get("@#{key.to_s}").nil?
       end
       result = {}
       result[:kayttotarkoitus] =purpose
@@ -34,7 +34,7 @@ module ApraService
       result[:rahamaara] = amount
       result[:saajatiedot] = grantee.to_hash
       result[:sisaltaako_kuluja] = (expense_amount > 0)
-      result[:tyonkestoeikantaa] = ignore_work_duration
+
       if ignore_work_duration
         result[:tyon_kesto_kuukausia] = 0
         result[:tyon_kesto_paivia] = 0
@@ -44,7 +44,7 @@ module ApraService
         result[:tyon_kesto_paivia] = work_duration_days
         result[:tyon_kesto_vuosia] = work_duration_years
       end
-
+      result[:tyonkestoeikantaa] = ignore_work_duration
       result[:tyoskentelyn_alkamispvm] = work_start_date.rfc3339 if work_start_date
       result[:tyoskentelyn_paattymispvm] = work_end_date.rfc3339 if work_end_date
       result[:viite] = reference
