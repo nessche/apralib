@@ -45,7 +45,6 @@ module ApraService
         notification.work_duration_years = 3
         notification.work_start_date = Date.today
         notification.work_end_date = Date.today >> 1
-        notification.reference = 'Meidän viite'
         service.send_notifications(notification)
 
       end
