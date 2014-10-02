@@ -1,7 +1,7 @@
 # Apralib
 
 
-[!(https://travis-ci.org/nessche/apralib.svg?branch=master)
+[![Build Status](https://travis-ci.org/nessche/apralib.svg?branch=master)](https://travis-ci.org/nessche/apralib)
 [![Gem Version](https://badge.fury.io/rb/apralib.svg)](http://badge.fury.io/rb/apralib)
 
 
