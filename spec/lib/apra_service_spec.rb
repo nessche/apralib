@@ -25,6 +25,10 @@ module ApraService
 
       end
 
+    end
+
+    describe 'send_notifications' do
+
       it 'should send the notification to the server' do
 
         service = get_client
@@ -71,7 +75,12 @@ module ApraService
         expect(notification_response.notification.reference).to eq(notification.reference)
       end
 
-
+      it 'should return an empty response when an empty array is passed' do
+        service = get_client
+        response = service.send_notifications([])
+        expect(response).not_to be_nil
+        expect(response.failed_notifications.count).to eq(0)
+      end
 
 
     end

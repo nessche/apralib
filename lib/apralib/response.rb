@@ -4,6 +4,10 @@ module ApraService
 
     attr_accessor :failed_notifications
 
+    def initialize
+      @failed_notifications = []
+    end
+
 
     def self.from_hash(hash)
       puts hash.inspect
@@ -13,8 +17,6 @@ module ApraService
       if failures
         failures = [failures] unless failures.is_a? Array
         response.failed_notifications = failures.map {|notification| NotificationResponse.from_hash(notification) }
-      else
-        response.failed_notifications = []
       end
       response
     end
