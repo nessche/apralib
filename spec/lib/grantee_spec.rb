@@ -22,6 +22,28 @@ module ApraService
 
     end
 
+    describe 'ssn=' do
+
+      it 'should convert the code to uppercase' do
+
+        grantee = Grantee.new
+        grantee.ssn = '111111-111c'
+        expect(grantee.ssn).to eq('111111-111C')
+
+      end
+
+      it 'should set the value to nil when passed a nil value' do
+
+        grantee = Grantee.new
+        grantee.ssn = '111111-111C'
+        grantee.ssn = nil
+        expect(grantee.ssn).to be_nil
+
+      end
+
+
+    end
+
   end
 
 end
