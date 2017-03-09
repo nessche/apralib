@@ -26,8 +26,8 @@ module ApraService
       grantee.address = hash[:apurahansaajanosoite]
       grantee.zip = hash[:apurahansaajanpostinumero]
       grantee.first_names = [hash[:etunimi1]]
-      grantee.first_name << hash[:etunimi2] if hash[:etunimi2]
-      grantee.first_name << hash[:etunimi3] if hash[:etunimi3]
+      grantee.first_names << hash[:etunimi2] if hash[:etunimi2]
+      grantee.first_names << hash[:etunimi3] if hash[:etunimi3]
       grantee.ssn = hash[:henkilotunnus]
       grantee.last_name = hash[:sukunimi]
       grantee
