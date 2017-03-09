@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'yard'
   spec.add_dependency 'savon', '~> 2.3.0'
   spec.add_dependency 'rack', '< 2'
+  spec.add_dependency 'rake', '< 11.0'
 end
