@@ -10,10 +10,11 @@ module ApraService
     def get_client
       credentials = {}
       credentials_file = File.join(File.dirname(__FILE__), 'apra_credentials.yml')
-      credentials = YAML.load(File.read(credentials_file)) if File.exists?(credentials_file)
+      credentials = YAML.load(File.read(credentials_file)) if File.exist?(credentials_file)
       user = credentials['user'] || ENV['APRA_USER']
       password = credentials['password'] || ENV['APRA_PASSWORD']
-      Client.new(user, password)
+      proxy = credentials['proxy'] || ENV['PROXY_URL']
+      Client.new(user, password, proxy)
     end
 
 
@@ -21,7 +22,7 @@ module ApraService
 
       it 'should create a valid object' do
 
-        service = Client.new('user','password')
+        service = Client.new('user', 'password')
         expect(service).not_to be_nil
 
       end

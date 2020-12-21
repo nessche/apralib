@@ -6,10 +6,12 @@ module ApraService
 
   class Client
 
-    def initialize(username, password)
+    def initialize(username, password, proxy = nil)
+
       @client = Savon.client(wsdl: 'https://palvelu.mela.fi/Apurahailmoitukset/ws/apurahanSyottoWS?wsdl',
                              wsse_auth: [username, password],
-                             endpoint: 'https://palvelu.mela.fi/Apurahailmoitukset/ws/apurahanSyottoWS')
+                             endpoint: 'https://palvelu.mela.fi/Apurahailmoitukset/ws/apurahanSyottoWS',
+                             proxy: proxy)
     end
 
     def send_notifications(notifications)
