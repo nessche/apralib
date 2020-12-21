@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.4.0'
 
   spec.add_development_dependency 'bundler', '~> 2.1'
-  spec.add_development_dependency 'rake', '< 11.0'
+  spec.add_development_dependency 'rake', '~> 13.0.0'
   spec.add_development_dependency 'rspec', '~> 3.10.0'
   spec.add_development_dependency 'yard'
   spec.add_dependency 'savon', '~> 2.12.0'
