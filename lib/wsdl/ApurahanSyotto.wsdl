@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<wsdl:definitions name="ApurahanSyotto"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://palvelurajapinta.mela.fi/WebService/" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	targetNamespace="http://palvelurajapinta.mela.fi/WebService/">
+	<wsdl:types>
+		<xs:schema xmlns:tns="http://palvelurajapinta.mela.fi/WebService/"
+			targetNamespace="http://palvelurajapinta.mela.fi/WebService/"
+			xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="unqualified"
+			attributeFormDefault="unqualified">
+			<xs:element type="tns:lisaaApurahat" name="lisaaApurahat" />
+			<xs:element type="tns:lisaaApurahatResponse" name="lisaaApurahatResponse" />
+			
+			<xs:complexType name="lisaaApurahat">
+				<xs:sequence>
+					<xs:element type="tns:apurahailmoitustiedot" name="apurahailmoitustiedot" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="apurahailmoitustiedot">
+				<xs:sequence>
+					<xs:element type="xs:string" name="kayttotarkoitus" />
+					<xs:element type="xs:string" name="kayttotarkoitustarkenne" minOccurs="0" />
+					<xs:element type="xs:decimal" name="kuluosuusrahamaara" minOccurs="0" />
+					<xs:element type="xs:string" name="kuluosuusteksti" minOccurs="0" />
+					<xs:element type="xs:dateTime" name="myontopaatoksenAntopvm" />
+					<xs:element type="xs:boolean" name="onkoMyonnettyTyoryhmalle" />
+					<xs:element type="xs:decimal" name="rahamaara" />
+					<xs:element type="tns:saajatiedot" name="saajatiedot" />
+					<xs:element type="xs:boolean" name="sisaltaakoKuluja" />
+					<xs:element type="xs:int" name="tyonKestoKuukausia" />
+					<xs:element type="xs:int" name="tyonKestoPaivia" />
+					<xs:element type="xs:int" name="tyonKestoVuosia" />
+					<xs:element type="xs:string" name="tyonkestoeikantaa" minOccurs="0" />
+					<xs:element type="xs:dateTime" name="tyoskentelynAlkamispvm" minOccurs="0" />
+					<xs:element type="xs:dateTime" name="tyoskentelynPaattymispvm" minOccurs="0" />
+					<xs:element type="xs:string" name="viite" minOccurs="0" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="saajatiedot">
+				<xs:sequence>
+					<xs:element type="xs:string" name="apurahansaajanosoite" minOccurs="0" />
+					<xs:element type="xs:string" name="apurahansaajanpostinumero" minOccurs="0" />
+					<xs:element type="xs:string" name="etunimi1" />
+					<xs:element type="xs:string" name="etunimi2" minOccurs="0" />
+					<xs:element type="xs:string" name="etunimi3" minOccurs="0" />
+					<xs:element type="tns:HenkilotunnusTyyppi" name="henkilotunnus" />
+					<xs:element type="xs:string" name="sukunimi" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="lisaaApurahatResponse">
+				<xs:sequence>
+					<xs:element type="tns:epaonnistunutIlmoitus" name="epaonnistuneetIlmoitukset" minOccurs="0" maxOccurs="unbounded" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:complexType name="epaonnistunutIlmoitus">
+				<xs:sequence>
+					<xs:element type="tns:apurahailmoitustiedot" name="ilmoitus" />
+					<xs:element type="xs:string" name="virhe" />
+				</xs:sequence>
+			</xs:complexType>
+			<xs:simpleType name="HenkilotunnusTyyppi">
+				<xs:restriction base="xs:string">
+					<xsd:pattern value="[0-3]\d[01]\d{3}[+\-A]\d{3}[0-9A-FHJ-NPR-Y]"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:schema>
+	</wsdl:types>
+	<wsdl:message name="lisaaApurahatResponse">
+		<wsdl:part name="parameters" element="tns:lisaaApurahatResponse">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:message name="lisaaApurahat">
+		<wsdl:part name="parameters" element="tns:lisaaApurahat">
+		</wsdl:part>
+	</wsdl:message>
+	<wsdl:portType name="ApurahanSyotto">
+		<wsdl:operation name="lisaaApurahat">
+			<wsdl:input name="lisaaApurahat" message="tns:lisaaApurahat">
+			</wsdl:input>
+			<wsdl:output name="lisaaApurahatResponse" message="tns:lisaaApurahatResponse">
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding type="tns:ApurahanSyotto" name="ApurahanSyottoSoapBinding">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+		<wsdl:operation name="lisaaApurahat">
+			<soap:operation style="document" soapAction="http://palvelurajapinta.mela.fi/WebService/lisaaApurahat" />
+			<wsdl:input name="lisaaApurahat">
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output name="lisaaApurahatResponse">
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="ApurahanSyotto">
+		<wsdl:port name="ApurahanSyottoImplPort" binding="tns:ApurahanSyottoSoapBinding">
+			<soap:address location="http://palvelurajapinta.mela.fi/Apurahailmoitukset/ApurahanSyotto"/>
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>

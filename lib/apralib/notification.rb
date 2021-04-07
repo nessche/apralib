@@ -7,8 +7,8 @@ module ApraService
                   :work_end_date, :reference, :work_duration_months, :work_duration_days,
                   :work_duration_years, :ignore_work_duration
 
-    NON_NILLABLE_KEYS = [:purpose, :expense_amount, :grant_date, :granted_to_group, :work_duration_months,
-                        :work_duration_days, :work_duration_years, :grantee, :amount, :ignore_work_duration]
+    NON_NILLABLE_KEYS = %i[purpose expense_amount grant_date granted_to_group work_duration_months
+                           work_duration_days work_duration_years grantee amount ignore_work_duration].freeze
 
 
     def initialize
@@ -22,7 +22,7 @@ module ApraService
 
     def to_hash
       NON_NILLABLE_KEYS.each do |key|
-        raise RuntimeError, "Variable #{key.to_s} cannot be nil" if self.instance_variable_get("@#{key.to_s}").nil?
+        raise "Variable #{key} cannot be nil" if instance_variable_get("@#{key}").nil?
       end
       result = {}
       result[:kayttotarkoitus] = purpose
@@ -33,7 +33,7 @@ module ApraService
       result[:onko_myonnetty_tyoryhmalle] = granted_to_group
       result[:rahamaara] = amount
       result[:saajatiedot] = grantee.to_hash
-      result[:sisaltaako_kuluja] = (expense_amount > 0)
+      result[:sisaltaako_kuluja] = expense_amount.positive?
 
       if ignore_work_duration
         result[:tyon_kesto_kuukausia] = 0

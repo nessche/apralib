@@ -8,10 +8,13 @@ module ApraService
 
     def initialize(username, password, proxy = nil)
 
-      @client = Savon.client(wsdl: 'https://palvelu.mela.fi/Apurahailmoitukset/ws/apurahanSyottoWS?wsdl',
+      wsdl_file = File.expand_path('../../wsdl/ApurahanSyotto.wsdl', __FILE__)
+
+      @client = Savon.client(wsdl: wsdl_file,
                              wsse_auth: [username, password],
-                             endpoint: 'https://palvelu.mela.fi/Apurahailmoitukset/ws/apurahanSyottoWS',
-                             proxy: proxy)
+                             endpoint: 'https://palvelurajapinta.mela.fi/Apurahailmoitukset/ApurahanSyotto',
+                             proxy: proxy,
+                             follow_redirects: true)
     end
 
     def send_notifications(notifications)
@@ -23,7 +26,8 @@ module ApraService
         message = {}
         message[:arg0] = notifications.map {|notification| notification.to_hash}
         response = @client.call(:lisaa_apurahat, :message => message)
-        raise RuntimeError, 'An error occurred while submitting the notification' unless response.success?
+        raise 'An error occurred while submitting the notification' unless response.success?
+
         Response.from_hash(response.body)
       else
         Response.new
