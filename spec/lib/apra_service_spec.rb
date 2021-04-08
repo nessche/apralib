@@ -53,7 +53,11 @@ module ApraService
         notification.work_start_date = Date.today
         notification.work_end_date = Date.today >> 1
         notification1 = Notification.new
-        notification1.grantee = grantee
+        grantee1 = Grantee.new
+        grantee1.first_names='Matti'
+        grantee1.last_name = 'Matelija'
+        grantee1.ssn = '111111-111C'
+        notification1.grantee = grantee1
         notification1.granted_to_group = false
         notification1.expense_amount = 0
         notification1.amount = 10000
@@ -63,20 +67,20 @@ module ApraService
         notification1.work_duration_months = 1
         notification1.work_duration_days = 2
         notification1.work_duration_years = 3
-        notification1.ignore_work_duration = false
+        notification1.ignore_work_duration = true
         notification1.work_start_date = Date.today
         notification1.work_end_date = Date.today >> 1
         response = service.send_notifications([notification, notification1])
         expect(response).not_to be_nil
         failed_notifications = response.failed_notifications
-        print(failed_notifications)
+        puts(failed_notifications)
         expect(failed_notifications).not_to be_nil
         expect(failed_notifications).to be_a Array
-        expect(failed_notifications.count).to eq(0)
+        expect(failed_notifications.count).to eq(1)
 
-        #notification_response = failed_notifications[0]
-        #expect(notification_response.error).not_to be_nil
-        #expect(notification_response.notification.reference).to eq(notification.reference)
+        notification_response = failed_notifications[0]
+        expect(notification_response.error).not_to be_nil
+        expect(notification_response.notification.reference).to eq(notification.reference)
       end
 
       it 'should return an empty response when an empty array is passed' do
